@@ -98,3 +98,20 @@ class UserAbout(Resource):
         user.about = data['about']
         user.save_to_db()
         return {'message': 'Success '+user.about}, 200
+
+class UserPassword(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument("password", type=str, required=True, help="This field cannot be left blank!")
+    @classmethod
+    @jwt_required
+    def put(cls):
+        myId = get_jwt_identity()
+        data = cls.parser.parse_args()
+        user = UserModel.find_by_id(myId)
+        password = data["password"]
+        salt = urandom(32)
+        user.password = hashPassword(password, salt)
+        user.salt = base64.b64encode(salt)
+        user.save_to_db()
+
+        return {'message': 'Success'}, 200

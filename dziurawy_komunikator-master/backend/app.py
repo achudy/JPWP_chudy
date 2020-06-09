@@ -5,6 +5,7 @@ from db import db
 from flask_socketio import SocketIO,send
 
 from resources.user import (UserRegister,
+                            UserPassword,
                            UserSearch,
                            UserLogin,                           
                            UserAbout)
@@ -84,6 +85,7 @@ def create_tables():
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserLogin,'/auth')
 api.add_resource(UserAbout,'/aboutuser')
+api.add_resource(UserPassword,'/passchange')
 
 api.add_resource(UserSearch, '/search/<string:username>')
 
